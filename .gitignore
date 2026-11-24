@@ -2,3 +2,6 @@ node_modules/
 target-copy/
 video/*.wav
 video/*.mp3
+video/demo-video.mp4
+video/check-frame.png
+video/clip*.mp4

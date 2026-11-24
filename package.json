@@ -10,5 +10,8 @@
   },
   "dependencies": {
     "playwright": "^1.49.0"
+  },
+  "devDependencies": {
+    "@testmuai/kane-cli": "^0.10.9"
   }
 }

@@ -1,0 +1,2 @@
+{"type":"stream_start","cli_version":"0.10.9","surface":"run","pid":2774,"v":1,"ts":"2026-11-24T21:56:15.515Z"}
+{"type":"recording_state","enabled":true,"session_id":"098719e8-37f7-44b9-8767-73841871f8cd","persist":false,"v":1,"ts":"2026-11-24T21:56:15.525Z"}

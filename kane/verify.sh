@@ -12,7 +12,9 @@ LOG="kane/verification-log.txt"
 : > "$LOG"
 
 echo "=== Kane CLI verification — $(date -u +%Y-%m-%dT%H:%M:%SZ) ===" | tee -a "$LOG"
-kane-cli --version 2>&1 | tee -a "$LOG"
+KANE="${KANE:-./node_modules/.bin/kane-cli}"
+command -v "$KANE" >/dev/null 2>&1 || KANE="kane-cli"
+"$KANE" --version 2>&1 | tee -a "$LOG"
 
 run_objective() {
   local name="$1"; shift
@@ -20,7 +22,7 @@ run_objective() {
   echo "" | tee -a "$LOG"
   echo "--- $name ---" | tee -a "$LOG"
   # shellcheck disable=SC2086
-  kane-cli run "$objective" --headless --agent "$@" 2>>"$LOG" | tee -a "$LOG"
+  "$KANE" run "$objective" --headless --agent "$@" 2>>"$LOG" | tee -a "$LOG"
   echo "exit code: $?" | tee -a "$LOG"
 }
 

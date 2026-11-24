@@ -1,0 +1,30 @@
+Kane CLI verification — attempt log
+====================================
+
+Attempt 1 — 2026-11-24T21:56:15Z (UTC)
+Command:
+  ./node_modules/.bin/kane-cli run "Open https://davidcareins-coder.github.io/voice-first-smoke-tester/report.html and confirm the page loads and shows a pass/fail table." --headless --agent
+Kane CLI version: 0.10.9
+Exit code: 1
+
+STDOUT (verbatim):
+{"type":"stream_start","cli_version":"0.10.9","surface":"run","pid":2774,"v":1,"ts":"2026-11-24T21:56:15.515Z"}
+{"type":"recording_state","enabled":true,"session_id":"098719e8-37f7-44b9-8767-73841871f8cd","persist":false,"v":1,"ts":"2026-11-24T21:56:15.525Z"}
+
+STDERR (verbatim):
+Not authenticated. Run: kane-cli login --oauth, or kane-cli login --username <user> --access-key <key>
+
+STATUS: BLOCKED ON AUTH — NOT RUN
+Kane CLI cannot run any flow without a TestMu AI account. What is needed:
+  1. David signs up at https://www.testmuai.com with david.careins@gmail.com
+     (free — every new account gets 10,000 credits, valid one month).
+  2. Claim the 10,000 free credits (required to be scored; same email on both).
+  3. Authenticate the CLI: `kane-cli login --oauth` (browser sign-in, David's
+     hands) or `kane-cli login --username <user> --access-key <key>`.
+  4. Re-run: `bash kane/verify.sh` — it runs all three objectives from
+     kane/objectives.md and appends the results to this log.
+
+The CLI itself is installed and working (version 0.10.9, installed locally in
+this repo's node_modules so it survives — a global install was wiped from
+/usr/lib/node_modules during this session). The objectives are written and the
+verify script is ready. Only the sign-in is missing.
