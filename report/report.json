@@ -1,0 +1,123 @@
+{
+  "tool": "voice-first-smoke-tester",
+  "version": "1.0.0",
+  "target": "http://127.0.0.1:8765/",
+  "targetNote": "Local copy of the live Daily Meds Helper deploy, served on localhost because this VM's Chromium cannot reach the internet through the egress proxy (all proxy forms fail with ERR_TUNNEL_CONNECTION_FAILED; curl works). Every file is byte-identical to the live deploy (verified by download + diff on Nov 24, 2026) except src/config.js, which is the placeholder locally (demo mode, deterministic schedule answers) while the live deploy has the Firebase config injected at deploy time (cloud AI answers). The import map points at the local Firebase SDK in node_modules instead of the gstatic CDN; in demo mode the SDK is never called. All UI, speech and schedule code under test is identical to the live deploy.",
+  "startedAt": "2026-11-24T21:54:16.347Z",
+  "finishedAt": "2026-11-24T21:54:25.139Z",
+  "durationMs": 8792,
+  "summary": {
+    "total": 12,
+    "pass": 8,
+    "fail": 4,
+    "coveragePercent": 80
+  },
+  "checks": [
+    {
+      "id": "page-loads",
+      "name": "Page loads",
+      "status": "pass",
+      "detail": "Title: \"Daily Meds Helper — demo\"",
+      "evidence": ""
+    },
+    {
+      "id": "voice-in-offered",
+      "name": "Voice input is offered",
+      "status": "pass",
+      "detail": "Microphone button (#mic-btn) is on the page.",
+      "evidence": ""
+    },
+    {
+      "id": "voice-in-api",
+      "name": "Speech recognition API exists in this browser",
+      "status": "pass",
+      "detail": "SpeechRecognition is available — the mic button can actually listen.",
+      "evidence": ""
+    },
+    {
+      "id": "voice-out-api",
+      "name": "Speech synthesis API exists in this browser",
+      "status": "pass",
+      "detail": "speechSynthesis is available — the app can speak answers aloud.",
+      "evidence": ""
+    },
+    {
+      "id": "answer-announced",
+      "name": "Answers are announced to screen readers",
+      "status": "fail",
+      "detail": "The answer area (#answer) has no aria-live and no role=status. A screen-reader user hears nothing when an answer appears — the answer only exists visually. Spoken speechSynthesis output does not fix this for screen-reader users.",
+      "evidence": ""
+    },
+    {
+      "id": "q-morning",
+      "name": "Question \"Did I take my morning pills?\" gets a spoken answer",
+      "status": "pass",
+      "detail": "Answer appeared and was spoken aloud: \"Not yet. Your morning pills at 8:00 AM are Lisinopril 10 mg, Metformin 500 mg, Vitamin D 1000 IU. They are not taken yet\"",
+      "evidence": "On-screen answer: \"Not yet. Your morning pills at 8:00 AM are Lisinopril 10 mg, Metformin 500 mg, Vitamin D 1000 IU. They are not taken yet.\""
+    },
+    {
+      "id": "q-next",
+      "name": "Question \"What's next?\" gets a spoken answer",
+      "status": "pass",
+      "detail": "Answer appeared and was spoken aloud: \"Next is your evening pills at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg.\"",
+      "evidence": "On-screen answer: \"Next is your evening pills at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg.\""
+    },
+    {
+      "id": "q-evening",
+      "name": "Question \"What time is my evening dose?\" gets a spoken answer",
+      "status": "pass",
+      "detail": "Answer appeared and was spoken aloud: \"Your evening pills are at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg. They are not yet taken.\"",
+      "evidence": "On-screen answer: \"Your evening pills are at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg. They are not yet taken.\""
+    },
+    {
+      "id": "q-took-them",
+      "name": "Question \"I took them.\" gets a spoken answer",
+      "status": "pass",
+      "detail": "Answer appeared and was spoken aloud: \"Done. Your morning pills are marked taken.\"",
+      "evidence": "On-screen answer: \"Done. Your morning pills are marked taken.\""
+    },
+    {
+      "id": "q-summary",
+      "name": "Question \"Write this week's summary.\" gets a spoken answer",
+      "status": "fail",
+      "detail": "The answer appeared ON SCREEN ONLY — nothing was spoken. A blind user hears silence. On-screen answer: \"The weekly summary needs the cloud AI, and the cloud call failed: Firebase is not configured yet. Demo week: morning pills taken 6 of 7 days, evening pills take\"",
+      "evidence": "speechSynthesis.speak was never called for this question."
+    },
+    {
+      "id": "voice-path-label",
+      "name": "Prescription label reader has a voice path",
+      "status": "fail",
+      "detail": "The label reader needs a PHOTO chosen from a file picker. There is no voice way to do that — no 'describe the label to me' or voice-guided capture. A blind user cannot use this feature at all.",
+      "evidence": ""
+    },
+    {
+      "id": "eyes-closed",
+      "name": "Eyes-closed coverage",
+      "status": "fail",
+      "detail": "4 of 5 tested questions produced a spoken answer (80%). A blind user can complete 80% of what was tested without seeing the screen.",
+      "evidence": ""
+    }
+  ],
+  "spokenLog": [
+    {
+      "question": "morning",
+      "text": "Not yet. Your morning pills at 8:00 AM are Lisinopril 10 mg, Metformin 500 mg, Vitamin D 1000 IU. They are not taken yet.",
+      "at": 1795557260414
+    },
+    {
+      "question": "next",
+      "text": "Next is your evening pills at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg.",
+      "at": 1795557261435
+    },
+    {
+      "question": "evening",
+      "text": "Your evening pills are at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg. They are not yet taken.",
+      "at": 1795557262244
+    },
+    {
+      "question": "took-them",
+      "text": "Done. Your morning pills are marked taken.",
+      "at": 1795557263053
+    }
+  ]
+}

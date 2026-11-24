@@ -1,0 +1,4 @@
+node_modules/
+target-copy/
+video/*.wav
+video/*.mp3

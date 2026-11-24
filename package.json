@@ -1,0 +1,14 @@
+{
+  "name": "voice-first-smoke-tester",
+  "version": "1.0.0",
+  "description": "Does your voice-first app actually work by voice? A tester that pretends to be a blind user: asks questions out loud and checks every answer was spoken, not just shown on a screen.",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "test": "node src/run.js --config tests/meds-helper.json --out report",
+    "verify": "bash kane/verify.sh"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}

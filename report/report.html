@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice-First Smoke Test — report</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:900px;margin:2rem auto;padding:0 1rem;color:#1c2430;line-height:1.5}
+h1{font-size:1.6rem}.pill{display:inline-block;padding:.2rem .7rem;border-radius:999px;font-weight:700;background:#eef2ff}
+table{border-collapse:collapse;width:100%;margin-top:1rem}td,th{border:1px solid #d7dce3;padding:.6rem .7rem;vertical-align:top;text-align:left}
+.detail{color:#374151}.evidence{color:#6b7280;font-size:.9em}
+ul{background:#f7f8fa;padding:1rem 1rem 1rem 2rem;border-radius:8px}
+footer{color:#6b7280;font-size:.85em;margin-top:2rem}
+</style></head><body>
+<h1>🎙️ Voice-First Smoke Test — report</h1>
+<p><span class="pill">8 passed · 4 failed · 12 checks</span></p>
+<p><strong>Target:</strong> <a href="http://127.0.0.1:8765/">http://127.0.0.1:8765/</a><br><strong>Note:</strong> Local copy of the live Daily Meds Helper deploy, served on localhost because this VM's Chromium cannot reach the internet through the egress proxy (all proxy forms fail with ERR_TUNNEL_CONNECTION_FAILED; curl works). Every file is byte-identical to the live deploy (verified by download + diff on Nov 24, 2026) except src/config.js, which is the placeholder locally (demo mode, deterministic schedule answers) while the live deploy has the Firebase config injected at deploy time (cloud AI answers). The import map points at the local Firebase SDK in node_modules instead of the gstatic CDN; in demo mode the SDK is never called. All UI, speech and schedule code under test is identical to the live deploy.<br>
+<strong>Run:</strong> 2026-11-24T21:54:16.347Z · <strong>Eyes-closed coverage:</strong> 80%</p>
+<p>This tester pretends to be a blind user. It asks the app questions and checks whether each one gets a <strong>spoken</strong> answer — not just words shown silently on a screen.</p>
+<table><tr><th>Result</th><th>Check</th></tr><tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Page loads</strong><br><span class="detail">Title: &quot;Daily Meds Helper — demo&quot;</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Voice input is offered</strong><br><span class="detail">Microphone button (#mic-btn) is on the page.</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Speech recognition API exists in this browser</strong><br><span class="detail">SpeechRecognition is available — the mic button can actually listen.</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Speech synthesis API exists in this browser</strong><br><span class="detail">speechSynthesis is available — the app can speak answers aloud.</span></td>
+    </tr>
+<tr>
+      <td><strong>❌ FAIL</strong></td>
+      <td><strong>Answers are announced to screen readers</strong><br><span class="detail">The answer area (#answer) has no aria-live and no role=status. A screen-reader user hears nothing when an answer appears — the answer only exists visually. Spoken speechSynthesis output does not fix this for screen-reader users.</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Question &quot;Did I take my morning pills?&quot; gets a spoken answer</strong><br><span class="detail">Answer appeared and was spoken aloud: &quot;Not yet. Your morning pills at 8:00 AM are Lisinopril 10 mg, Metformin 500 mg, Vitamin D 1000 IU. They are not taken yet&quot;</span><br><span class="evidence">On-screen answer: &quot;Not yet. Your morning pills at 8:00 AM are Lisinopril 10 mg, Metformin 500 mg, Vitamin D 1000 IU. They are not taken yet.&quot;</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Question &quot;What's next?&quot; gets a spoken answer</strong><br><span class="detail">Answer appeared and was spoken aloud: &quot;Next is your evening pills at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg.&quot;</span><br><span class="evidence">On-screen answer: &quot;Next is your evening pills at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg.&quot;</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Question &quot;What time is my evening dose?&quot; gets a spoken answer</strong><br><span class="detail">Answer appeared and was spoken aloud: &quot;Your evening pills are at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg. They are not yet taken.&quot;</span><br><span class="evidence">On-screen answer: &quot;Your evening pills are at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg. They are not yet taken.&quot;</span></td>
+    </tr>
+<tr>
+      <td><strong>✅ PASS</strong></td>
+      <td><strong>Question &quot;I took them.&quot; gets a spoken answer</strong><br><span class="detail">Answer appeared and was spoken aloud: &quot;Done. Your morning pills are marked taken.&quot;</span><br><span class="evidence">On-screen answer: &quot;Done. Your morning pills are marked taken.&quot;</span></td>
+    </tr>
+<tr>
+      <td><strong>❌ FAIL</strong></td>
+      <td><strong>Question &quot;Write this week's summary.&quot; gets a spoken answer</strong><br><span class="detail">The answer appeared ON SCREEN ONLY — nothing was spoken. A blind user hears silence. On-screen answer: &quot;The weekly summary needs the cloud AI, and the cloud call failed: Firebase is not configured yet. Demo week: morning pills taken 6 of 7 days, evening pills take&quot;</span><br><span class="evidence">speechSynthesis.speak was never called for this question.</span></td>
+    </tr>
+<tr>
+      <td><strong>❌ FAIL</strong></td>
+      <td><strong>Prescription label reader has a voice path</strong><br><span class="detail">The label reader needs a PHOTO chosen from a file picker. There is no voice way to do that — no 'describe the label to me' or voice-guided capture. A blind user cannot use this feature at all.</span></td>
+    </tr>
+<tr>
+      <td><strong>❌ FAIL</strong></td>
+      <td><strong>Eyes-closed coverage</strong><br><span class="detail">4 of 5 tested questions produced a spoken answer (80%). A blind user can complete 80% of what was tested without seeing the screen.</span></td>
+    </tr></table>
+<h2>Everything the app spoke aloud</h2><ul><li><strong>morning:</strong> “Not yet. Your morning pills at 8:00 AM are Lisinopril 10 mg, Metformin 500 mg, Vitamin D 1000 IU. They are not taken yet.”</li>
+<li><strong>next:</strong> “Next is your evening pills at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg.”</li>
+<li><strong>evening:</strong> “Your evening pills are at 8:00 PM: Atorvastatin 20 mg, Metformin 500 mg. They are not yet taken.”</li>
+<li><strong>took-them:</strong> “Done. Your morning pills are marked taken.”</li></ul>
+<footer>voice-first-smoke-tester v1.0.0 · A FAIL means a blind user is stuck at that step. ENV means the check needs a real browser, not headless Chromium.</footer>
+</body></html>

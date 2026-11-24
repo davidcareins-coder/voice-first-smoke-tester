@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice-First Smoke Tester — does your voice-first app work by voice?</title>
+<style>
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:820px;margin:0 auto;padding:2rem 1.2rem;color:#1c2430;line-height:1.6;background:#fffdf7}
+  h1{font-size:2rem;line-height:1.2;margin-bottom:.3rem}
+  .sub{font-size:1.15rem;color:#4b5563}
+  .card{background:#fff;border:1px solid #e5e0d5;border-radius:14px;padding:1.2rem 1.4rem;margin:1.2rem 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .big{font-size:1.5rem;font-weight:800}
+  code{background:#f3f4f6;padding:.15rem .4rem;border-radius:6px;font-size:.92em}
+  pre{background:#111827;color:#e5e7eb;padding:1rem;border-radius:10px;overflow-x:auto}
+  pre code{background:none;padding:0}
+  a{color:#1d4ed8}
+  .fail{color:#b91c1c;font-weight:700}.pass{color:#15803d;font-weight:700}
+  footer{color:#6b7280;font-size:.85em;margin-top:2rem}
+</style>
+</head>
+<body>
+<h1>🎙️ Voice-First Smoke Tester</h1>
+<p class="sub">Does your "voice-first" app actually work by voice? This tester finds out the way a blind user would — by asking it questions and listening for spoken answers.</p>
+
+<div class="card">
+  <p><strong>The problem:</strong> developers build voice-first apps, then test them with a mouse and their eyes. That's like testing a wheelchair ramp by walking up it. If the app answers on screen but never speaks, a blind user hears silence — and nobody catches it.</p>
+  <p><strong>This tester:</strong> asks the app questions out loud, checks every answer was <em>spoken</em>, checks answers are announced to screen readers, and checks every feature has a voice path. Then it prints an eyes-closed coverage score.</p>
+</div>
+
+<div class="card">
+  <h2>Latest run — Daily Meds Helper</h2>
+  <p>First target: a voice-first medication helper for an older adult with poor vision. Run Nov 24, 2026: <strong>8 passed, 4 failed, 80% eyes-closed coverage</strong>.</p>
+  <p><span class="pass">✅ Every routine question got a spoken answer.</span><br>
+  <span class="fail">❌ The answer area has no aria-live</span> — screen-reader users hear nothing when an answer appears.<br>
+  <span class="fail">❌ A failed weekly summary is never spoken</span> — the app only speaks the summary when the cloud AI succeeds.<br>
+  <span class="fail">❌ The label reader has no voice path</span> — it needs a photo from a file picker, which a blind user can't do.</p>
+  <p><a href="report.html">Read the full report →</a></p>
+</div>
+
+<div class="card">
+  <h2>Run it on your app</h2>
+  <pre><code>git clone https://github.com/davidcareins-coder/voice-first-smoke-tester.git
+cd voice-first-smoke-tester
+npm install
+node src/run.js --target https://your-app.example.com --config tests/meds-helper.json --out report</code></pre>
+  <p>Exit code <code>0</code> = no failures. Exit code <code>1</code> = the app leaves a blind user stuck somewhere. Report lands in <code>report/report.html</code>.</p>
+  <p>Write your own question set as JSON: a <code>target</code> URL and questions with the control to click (<code>selector</code>), the words a user would say (<code>spoken</code>), and where the answer appears (<code>answerSelector</code>).</p>
+</div>
+
+<div class="card">
+  <h2>Verified with Kane CLI</h2>
+  <p>Built for the <a href="https://www.kaneclihack.sh/">KaneCLI Online Hackathon</a> (Nov 12–26, 2026). Kane CLI verified the tester itself — plain-English flows, pass or fail from a real browser. Objectives and the run are in the <a href="https://github.com/davidcareins-coder/voice-first-smoke-tester/tree/main/kane">kane/</a> folder of the repo.</p>
+</div>
+
+<footer>Voice-First Smoke Tester · built by David Lee Careins · Apache-2.0 · No paid APIs, no secrets, $0 to run.</footer>
+</body>
+</html>
